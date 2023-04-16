@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+p {
+  position: absolute;
+  top: -10%;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  outline: 1px solid black;
+  width: 300px;
+  height: 300px;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  outline: 1px solid blue;
+}
+
+.box:hover {
+  outline: 2px solid black;
+}
+
+.box:active {
+  outline: 2px solid black;
+}
