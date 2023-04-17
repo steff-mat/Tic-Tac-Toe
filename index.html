@@ -8,8 +8,8 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <p>Moves left: <span id="move">5</span></p>
-    <div class="container">
+    <p class="moves hidder">Moves left: <span id="move">5</span></p>
+    <div class="container hidder">
       <button class="box" id="tl"></button>
       <button class="box" id="tm"></button>
       <button class="box" id="tr"></button>
@@ -19,6 +19,10 @@
       <button class="box" id="bl"></button>
       <button class="box" id="bm"></button>
       <button class="box" id="br"></button>
+    </div>
+    <div class="winner-box hidder">
+      <p class="winner"></p>
+      <p class="reset">Reset Game</p>
     </div>
     <script src="/script.js"></script>
   </body>

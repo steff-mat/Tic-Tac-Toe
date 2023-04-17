@@ -2,6 +2,7 @@
 
 const playerItem = setPlayItem('X');
 const computerItem = setPlayItem('0');
+let gameStatus = true;
 
 (function () {
   const buttons = document.querySelectorAll('.box');
@@ -19,6 +20,13 @@ const computerItem = setPlayItem('0');
         movesLeft--;
         movesLeftSelector.innerText = movesLeft;
       }
+      if (movesLeft === 0 && winChecker.winner === 'D') {
+        document.querySelector('.container').classList.toggle('hidder');
+        document.querySelector('.moves').classList.toggle('hidder');
+        document.querySelector('.winner-box').classList.toggle('hidder');
+        document.querySelector('.winner').innerText = `Draw`;
+        gameStatus = false;
+      }
     });
   }
 })();
@@ -29,11 +37,17 @@ const winChecker = {
   },
   winConfirm(x) {
     console.log(`${x} won the match!`);
+    document.querySelector('.container').classList.toggle('hidder');
+    document.querySelector('.moves').classList.toggle('hidder');
+    document.querySelector('.winner-box').classList.toggle('hidder');
+    document.querySelector('.winner').innerText = `${x} won the match!`;
+    gameStatus = false;
+    this.winner = x;
+    return this.winner;
   },
   validator(x) {
     if (this.vx('tl') === x && this.vx('tm') === x && this.vx('tr') === x) {
       this.winConfirm(x);
-      console.log(this.vx('tl'), this.vx('tm'), this.vx('tr'), x);
       console.log('tl-tm-tr');
     } else if (
       this.vx('ml') === x &&
@@ -144,3 +158,18 @@ function printSelector(num) {
 const applySelection = function () {
   printSelector(cpuSelector());
 };
+
+function resetGame() {
+  gameStatus = true;
+  const buttons = document.querySelector('.box');
+  for (const button of buttons) {
+    button.innerText = '';
+  }
+}
+
+document.querySelector('.reset').addEventListener('click', () => {
+  document.querySelector('.container').classList.toggle('hidder');
+  document.querySelector('.moves').classList.toggle('hidder');
+  document.querySelector('.winner-box').classList.toggle('hidder');
+  resetGame();
+});

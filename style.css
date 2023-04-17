@@ -11,7 +11,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-p {
+.moves {
   position: absolute;
   top: -10%;
 }
@@ -36,4 +36,25 @@ p {
 
 .box:active {
   outline: 2px solid black;
+}
+
+.winner-box {
+  width: 300px;
+  height: 100px;
+  background-color: rgb(244, 244, 244);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.winner-box p {
+  text-align: center;
+}
+
+.reset {
+  background-color: aliceblue;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
 }
