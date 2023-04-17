@@ -11,9 +11,30 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.moves {
-  position: absolute;
-  top: -10%;
+.hidden {
+  display: none !important;
+}
+
+.game-box {
+  width: 300px;
+  height: auto;
+  background-color: rgb(250, 250, 250);
+}
+
+#form {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
+}
+
+.m15px {
+  margin: 15px;
+}
+
+.hidden {
+  display: none;
 }
 
 .container {
@@ -27,34 +48,18 @@ body {
 .box {
   width: 100px;
   height: 100px;
-  outline: 1px solid blue;
+  border: 1px solid grey;
 }
 
 .box:hover {
-  outline: 2px solid black;
+  background-color: lightgrey;
 }
 
 .box:active {
-  outline: 2px solid black;
+  border: 1px solid black;
 }
 
-.winner-box {
-  width: 300px;
-  height: 100px;
-  background-color: rgb(244, 244, 244);
+.end-state {
   display: grid;
-  align-items: center;
-  justify-content: center;
-}
-.winner-box p {
   text-align: center;
-}
-
-.reset {
-  background-color: aliceblue;
-  padding: 10px;
-}
-
-.hidden {
-  display: none;
 }

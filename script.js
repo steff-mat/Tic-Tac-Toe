@@ -1,175 +1,53 @@
 'use strict';
 
-const playerItem = setPlayItem('X');
-const computerItem = setPlayItem('0');
-let gameStatus = true;
+const dom = {
+  form: document.querySelector('form'),
+  startMenu: document.querySelector('.initial-state'),
+  gameMenu: document.querySelector('.game-state'),
+  restartMenu: document.querySelector('.end-state'),
+  restartButton: document.querySelector('.restart'),
+  nameInput: document.querySelector('#username'),
+  buttons: document.querySelectorAll('.box'),
+  nameHolder: [],
+};
 
-(function () {
-  const buttons = document.querySelectorAll('.box');
-  const movesLeftSelector = document.getElementById('move');
-  let movesLeft = 5;
-  for (const button of buttons) {
+const xo = {
+  x: 'X',
+  o: 'O',
+};
+
+const winner = {
+  win: 'Somebody won!',
+  noWin: 'Draw!',
+};
+
+const selection = {
+  player: [],
+  cpu: [],
+};
+
+const combos = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 9],
+];
+
+function playerLogic() {
+  for (const button of dom.buttons) {
     button.addEventListener('click', () => {
-      if (button.innerText == '') {
-        console.log(event.target.id);
-        button.innerText = playerItem;
-        winChecker.validator('X');
-        if (movesLeft > 1) {
-          applySelection();
-        }
-        movesLeft--;
-        movesLeftSelector.innerText = movesLeft;
-      }
-      if (movesLeft === 0 && winChecker.winner === 'D') {
-        document.querySelector('.container').classList.toggle('hidder');
-        document.querySelector('.moves').classList.toggle('hidder');
-        document.querySelector('.winner-box').classList.toggle('hidder');
-        document.querySelector('.winner').innerText = `Draw`;
-        gameStatus = false;
+      if (selection.player.includes(event.target.id) === false) {
+        button.innerText = xo.x;
+        selection.player.push(event.target.id);
       }
     });
   }
-})();
-
-const winChecker = {
-  vx(x) {
-    return document.getElementById(x).innerText;
-  },
-  winConfirm(x) {
-    console.log(`${x} won the match!`);
-    document.querySelector('.container').classList.toggle('hidder');
-    document.querySelector('.moves').classList.toggle('hidder');
-    document.querySelector('.winner-box').classList.toggle('hidder');
-    document.querySelector('.winner').innerText = `${x} won the match!`;
-    gameStatus = false;
-    this.winner = x;
-    return this.winner;
-  },
-  validator(x) {
-    if (this.vx('tl') === x && this.vx('tm') === x && this.vx('tr') === x) {
-      this.winConfirm(x);
-      console.log('tl-tm-tr');
-    } else if (
-      this.vx('ml') === x &&
-      this.vx('mm') === x &&
-      this.vx('mr') === x
-    ) {
-      this.winConfirm(x);
-      console.log('ml-mm-mr');
-    } else if (
-      this.vx('bl') === x &&
-      this.vx('bm') === x &&
-      this.vx('br') === x
-    ) {
-      this.winConfirm(x);
-      console.log('bl-bm-br');
-    } else if (
-      this.vx('tl') === x &&
-      this.vx('ml') === x &&
-      this.vx('bl') === x
-    ) {
-      this.winConfirm(x);
-      console.log('tl-ml-bl');
-    } else if (
-      this.vx('tm') === x &&
-      this.vx('mm') === x &&
-      this.vx('bm') === x
-    ) {
-      this.winConfirm(x);
-      console.log('tm-mm-bm');
-    } else if (
-      this.vx('tr') === x &&
-      this.vx('mr') === x &&
-      this.vx('br') === x
-    ) {
-      this.winConfirm(x);
-      console.log('tr-mr-br');
-    } else if (
-      this.vx('tl') === x &&
-      this.vx('mm') === x &&
-      this.vx('br') === x
-    ) {
-      this.winConfirm(x);
-      console.log('tl-mm-br');
-    } else if (
-      this.vx('tr') === x &&
-      this.vx('mm') === x &&
-      this.vx('bl') === x
-    ) {
-      this.winConfirm(x);
-      console.log('tr-mm-bl');
-    }
-  },
-};
-
-function setPlayItem(item) {
-  return item;
 }
+playerLogic();
 
-function cpuSelector() {
-  return Math.floor(Math.random() * 9 + 1);
-}
-
-function printSelector(num) {
-  function printToBox(boxId, val) {
-    return document.getElementById(boxId).innerText === ''
-      ? (document.getElementById(boxId).innerText = val)
-      : applySelection();
-  }
-
-  const validator = function (boxId) {
-    document.getElementById(boxId).innerText;
-  };
-  const validatorHold = function (boxId) {
-    validator(boxId) != '' ? printToBox(boxId, computerItem) : applySelection();
-  };
-  switch (num) {
-    case 1:
-      validatorHold('tl');
-      break;
-    case 2:
-      validatorHold('tm');
-      break;
-    case 3:
-      validatorHold('tr');
-      break;
-    case 4:
-      validatorHold('ml');
-      break;
-    case 5:
-      validatorHold('mm');
-      break;
-    case 6:
-      validatorHold('mr');
-      break;
-    case 7:
-      validatorHold('bl');
-      break;
-    case 8:
-      validatorHold('bm');
-      break;
-    case 9:
-      validatorHold('br');
-      break;
-  }
-  winChecker.validator('0');
-}
-
-const applySelection = function () {
-  printSelector(cpuSelector());
-};
-
-function resetGame() {
-  gameStatus = true;
-  const buttons = document.querySelector('.box');
-  for (const button of buttons) {
-    button.innerText = '';
-  }
-}
-
-document.querySelector('.reset').addEventListener('click', () => {
-  document.querySelector('.container').classList.toggle('hidder');
-  document.querySelector('.moves').classList.toggle('hidder');
-  document.querySelector('.winner-box').classList.toggle('hidder');
-  resetGame();
-});
+function cpuLogic() {}
+cpuLogic();
