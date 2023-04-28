@@ -1,6 +1,7 @@
 'use strict';
 
 let gameState = true;
+let winnerFound = false;
 
 const dom = {
   form: document.querySelector('form'),
@@ -12,6 +13,29 @@ const dom = {
   buttons: document.querySelectorAll('.box'),
   winner: document.querySelector('.winner-confirmation'),
   nameHolder: [],
+};
+
+class gameObject {
+  constructor(name, sign, selection) {
+    this.name = name;
+    this.sign = sign;
+    this.selection = selection;
+  }
+}
+
+class movValue {
+  constructor(box) {
+    this.box = box;
+  }
+}
+
+const human = new gameObject(dom.nameHolder, 'X', []);
+const cpu = new gameObject('CPU', 'O', []);
+const xType = new movValue('X');
+const oType = new movValue('O');
+
+const select = {
+  moveCount: 0,
 };
 
 function toggler(x) {
@@ -26,14 +50,6 @@ dom.form.addEventListener('submit', (e) => {
   toggler(dom.gameMenu);
 });
 
-const select = {
-  x: 'X',
-  o: 'O',
-  player: [],
-  cpu: [],
-  moveCount: 0,
-};
-
 const combos = [
   [1, 2, 3],
   [4, 5, 6],
@@ -42,19 +58,23 @@ const combos = [
   [2, 5, 8],
   [3, 6, 9],
   [1, 5, 9],
-  [3, 5, 9],
+  [3, 5, 7],
 ];
 
 function playerLogic() {
   if (gameState === true) {
     for (const button of dom.buttons) {
       button.addEventListener('click', () => {
-        if (select.player.includes(event.target.id) === false) {
-          button.innerText = select.x;
-          select.player.push(parseInt(event.target.id));
+        if (
+          human.selection.includes(parseInt(event.target.id)) === false &&
+          button.innerText === ''
+        ) {
+          button.innerText = xType.box;
+          human.selection.push(parseInt(event.target.id));
           select.moveCount++;
-          loopCombo(select.player, combos);
-          if (select.moveCount <= 8) {
+          loopCombo(human.selection, combos, human.name);
+          draw();
+          if (select.moveCount <= 8 && winnerFound !== true) {
             cpuLogic();
           }
         }
@@ -66,11 +86,14 @@ playerLogic();
 
 function cpuLogic() {
   const docLoader = function (x) {
-    if (select.cpu.includes(x) == false && select.player.includes(x) == false) {
+    if (
+      cpu.selection.includes(x) == false &&
+      human.selection.includes(x) == false
+    ) {
       select.moveCount++;
-      select.cpu.push(x);
-      loopCombo(select.cpu, combos);
-      return (document.getElementById(`${x}`).innerText = select.o);
+      cpu.selection.push(x);
+      document.getElementById(`${x}`).innerText = oType.box;
+      loopCombo(cpu.selection, combos, cpu.name);
     } else {
       docLoader(xzy());
     }
@@ -81,14 +104,17 @@ function cpuLogic() {
   docLoader(xzy());
 }
 
-function loopCombo(a, b) {
+function loopCombo(a, b, c) {
   for (const arr of b) {
     const matches = a.filter((item) => arr.includes(item));
-    if (matches.length > 2) {
+    if (matches.length === 3) {
+      dom.winner.innerText = `${c} has won!`;
       gameState = false;
-      console.log(`At least 3 items in ${a} are present in ${arr}`);
       toggler(dom.gameMenu);
       toggler(dom.restartMenu);
+      if (!winnerFound) {
+        winnerFound = true;
+      }
       break;
     }
   }
@@ -99,3 +125,12 @@ dom.restartButton.addEventListener('click', () => {
   toggler(dom.startMenu);
   location.reload();
 });
+
+function draw() {
+  if (dom.winner !== true && select.moveCount === 9) {
+    dom.winner.innerText = 'Draw!';
+    gameState = false;
+    toggler(dom.gameMenu);
+    toggler(dom.restartMenu);
+  }
+}
