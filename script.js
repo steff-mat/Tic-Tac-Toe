@@ -127,7 +127,7 @@ dom.restartButton.addEventListener('click', () => {
 });
 
 function draw() {
-  if (dom.winner !== true && select.moveCount === 9) {
+  if (winnerFound === false && select.moveCount === 9) {
     dom.winner.innerText = 'Draw!';
     gameState = false;
     toggler(dom.gameMenu);
