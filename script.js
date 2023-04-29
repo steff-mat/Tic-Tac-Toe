@@ -12,7 +12,6 @@ const dom = {
   nameInput: document.querySelector('#username'),
   buttons: document.querySelectorAll('.box'),
   winner: document.querySelector('.winner-confirmation'),
-  nameHolder: [],
 };
 
 class gameObject {
@@ -29,7 +28,7 @@ class movValue {
   }
 }
 
-const human = new gameObject(dom.nameHolder, 'X', []);
+const human = new gameObject(localStorage.getItem('player'), 'X', []);
 const cpu = new gameObject('CPU', 'O', []);
 const xType = new movValue('X');
 const oType = new movValue('O');
@@ -42,12 +41,23 @@ function toggler(x) {
   return x.classList.toggle('hidden');
 }
 
+(function () {
+  if (localStorage.player !== typeof undefined) {
+    document.querySelector('#username').value = localStorage.player;
+  }
+  if (document.querySelector('#username').value === 'undefined') {
+    document.querySelector('#username').value = '';
+  }
+})();
+
 dom.form.addEventListener('submit', (e) => {
   e.preventDefault();
-  dom.nameHolder.push(dom.nameInput.value);
-  dom.form.reset();
-  toggler(dom.startMenu);
-  toggler(dom.gameMenu);
+
+  if (dom.nameInput.value !== '' && localStorage.player !== typeof undefined) {
+    localStorage.setItem('player', dom.nameInput.value);
+    toggler(dom.startMenu);
+    toggler(dom.gameMenu);
+  }
 });
 
 const combos = [
@@ -72,7 +82,7 @@ function playerLogic() {
           button.innerText = xType.box;
           human.selection.push(parseInt(event.target.id));
           select.moveCount++;
-          loopCombo(human.selection, combos, human.name);
+          loopCombo(human.selection, combos, localStorage.getItem('player'));
           draw();
           if (select.moveCount <= 8 && winnerFound !== true) {
             cpuLogic();
@@ -105,6 +115,7 @@ function cpuLogic() {
 }
 
 function loopCombo(a, b, c) {
+  console.log(localStorage.getItem('player'));
   for (const arr of b) {
     const matches = a.filter((item) => arr.includes(item));
     if (matches.length === 3) {
@@ -121,8 +132,6 @@ function loopCombo(a, b, c) {
 }
 
 dom.restartButton.addEventListener('click', () => {
-  toggler(dom.restartMenu);
-  toggler(dom.startMenu);
   location.reload();
 });
 
