@@ -1,0 +1,20 @@
+@media (prefers-color-scheme: dark) {
+  * {
+    background-color: #212121;
+    color: #f3f6fb;
+  }
+
+  input {
+    border-color: #f3f6fb;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  * {
+    background-color: #f3f6fb;
+    color: #212121;
+  }
+  input {
+    border-color: #212121;
+  }
+}

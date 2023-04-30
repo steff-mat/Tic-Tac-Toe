@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: ease-in-out 100ms;
 }
 
 body {
@@ -9,6 +10,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .hidden {
@@ -31,10 +34,6 @@ body {
 
 .m15px {
   margin: 15px;
-}
-
-.hidden {
-  display: none;
 }
 
 .container {
@@ -61,5 +60,9 @@ body {
 
 .end-state {
   display: grid;
+  text-align: center;
+}
+
+input {
   text-align: center;
 }
